@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-flask-app
+  labels:
+    name: customer-flask-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: customer-flask-app
+  template:
+    metadata:
+      name: customer-flask-app
+      labels:
+        name: customer-flask-app
+    spec:
+      containers:
+        - name: customer-flask-app
+          image: eu.gcr.io/mike-237810/customer_service:1.0.0
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env:
+            - name: DEBUG_MODE
+              value: "1"
