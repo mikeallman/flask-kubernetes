@@ -12,5 +12,10 @@ build_image:
 push_image:
 	docker push eu.gcr.io/mike-237810/customer_service:1.0.0
 
+rbac:
+	kubectl create serviceaccount --namespace kube-system tiller
+	kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+	kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}
+
 deploy_app:
 	helm install ./helm

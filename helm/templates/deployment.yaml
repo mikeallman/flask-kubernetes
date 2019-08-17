@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-flask-app
+  name: {{ .Release.Name }}-customer-flask-app
   labels:
-    name: customer-flask-app
+    name: {{ .Release.Name }}-customer-flask-app
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      name: customer-flask-app
+      name: {{ .Release.Name }}-customer-flask-app
   template:
     metadata:
-      name: customer-flask-app
+      name: {{ .Release.Name }}-customer-flask-app
       labels:
-        name: customer-flask-app
+        name: {{ .Release.Name }}-customer-flask-app
     spec:
       containers:
         - name: customer-flask-app
-          image: eu.gcr.io/mike-237810/customer_service:1.0.0
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 8000
           resources:
