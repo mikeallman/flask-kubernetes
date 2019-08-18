@@ -5,7 +5,7 @@ stop_db:
 	docker kill postgres
 
 build_image:
-	cd flask-app; docker build --tag eu.gcr.io/mike-237810/customer_service:1.0.0 .
+	docker build --tag eu.gcr.io/mike-237810/customer_service:1.0.0 .
 
 push_image:
 	docker push eu.gcr.io/mike-237810/customer_service:1.0.0

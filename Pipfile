@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+connexion = ">=2.0.2"
+swagger-ui-bundle = ">=0.0.2"
+python-dateutil = ">=2.6.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
