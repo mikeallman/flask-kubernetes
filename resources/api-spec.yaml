@@ -1,0 +1,100 @@
+---
+swagger: "2.0"
+info:
+  description: Simple Customer API
+  version: 1.0.0
+  title: Simple Customer API
+  contact:
+    email: mike@allman.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /mikeallman/customer-service/1.0.0
+schemes:
+- https
+paths:
+  /customers:
+    get:
+      summary: searches customers
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      operationId: searchCustomers
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: query
+        description: pass an optional id for looking up customers
+        required: false
+        type: string
+      - name: skip
+        in: query
+        description: number of records to skip for pagination
+        required: false
+        type: integer
+        minimum: 0
+        format: int32
+      - name: limit
+        in: query
+        description: maximum number of records to return
+        required: false
+        type: integer
+        maximum: 50
+        minimum: 0
+        format: int32
+      responses:
+        200:
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CustomerItem'
+        400:
+          description: bad input parameter
+    post:
+      summary: adds a customer item
+      description: Adds an item to the system
+      operationId: addCustomer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: inventoryItem
+        description: Inventory item to add
+        required: false
+        schema:
+          $ref: '#/definitions/CustomerItem'
+      responses:
+        201:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+definitions:
+  CustomerItem:
+    type: object
+    required:
+    - dob
+    - first_name
+    - id
+    - surname
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      first_name:
+        type: string
+        example: Mike
+      surname:
+        type: string
+        example: Allman
+      dob:
+        type: string
+        format: date-time
+        example: 1976-11-24T09:12:33.001Z
