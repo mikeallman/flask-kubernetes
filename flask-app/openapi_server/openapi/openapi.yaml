@@ -1,0 +1,105 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: mike@allman.io
+  description: Simple Customer API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Simple Customer API
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/mikeallman/customer-service/1.0.0
+paths:
+  /customers:
+    get:
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      operationId: search_customers
+      parameters:
+      - description: pass an optional id for looking up customers
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: number of records to skip for pagination
+        in: query
+        name: skip
+        schema:
+          format: int32
+          minimum: 0
+          type: integer
+      - description: maximum number of records to return
+        in: query
+        name: limit
+        schema:
+          format: int32
+          maximum: 50
+          minimum: 0
+          type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CustomerItem'
+                type: array
+          description: search results matching criteria
+        400:
+          content: {}
+          description: bad input parameter
+      summary: searches customers
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+    post:
+      description: Adds an item to the system
+      operationId: add_customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerItem'
+        description: Inventory item to add
+        required: false
+      responses:
+        201:
+          content: {}
+          description: item created
+        400:
+          content: {}
+          description: invalid input, object invalid
+        409:
+          content: {}
+          description: an existing item already exists
+      summary: adds a customer item
+      x-codegen-request-body-name: inventoryItem
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    CustomerItem:
+      example:
+        surname: Allman
+        dob: 2000-01-23T04:56:07.000+00:00
+        id: d290f1ee-6c54-4b01-90e6-d701748f0851
+        first_name: Mike
+      properties:
+        id:
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+          format: uuid
+          type: string
+        first_name:
+          example: Mike
+          type: string
+        surname:
+          example: Allman
+          type: string
+        dob:
+          format: date-time
+          type: string
+      required:
+      - dob
+      - first_name
+      - id
+      - surname
+      type: object
