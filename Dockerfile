@@ -7,10 +7,8 @@ COPY requirements.txt /usr/src/app/
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY flask-app /usr/src/app
+COPY openapi_server /usr/src/app/openapi_server
 
 EXPOSE 8080
 
-ENTRYPOINT ["python3"]
-
-CMD ["-m", "openapi_server"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "openapi_server.app:application"]
