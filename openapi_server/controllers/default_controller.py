@@ -4,6 +4,9 @@ import six
 from openapi_server.models.customer_item import CustomerItem  # noqa: E501
 from openapi_server import util
 
+# simple in memory customer db
+customers = {}
+
 
 def add_customer(inventory_item=None):  # noqa: E501
     """adds a customer item
@@ -17,7 +20,9 @@ def add_customer(inventory_item=None):  # noqa: E501
     """
     if connexion.request.is_json:
         inventory_item = CustomerItem.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+
+    customers[inventory_item.id] = inventory_item
+    return 'added'
 
 
 def search_customers(id=None, skip=None, limit=None):  # noqa: E501
@@ -34,4 +39,9 @@ def search_customers(id=None, skip=None, limit=None):  # noqa: E501
 
     :rtype: List[CustomerItem]
     """
-    return 'do some magic!'
+
+    if id:
+        return [customers.get(id)]
+    if skip:
+        return list(customers.values())[skip:limit]
+    return list(customers.values())
