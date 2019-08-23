@@ -14,5 +14,5 @@ spec:
     ref: master
     path: helm
   values:
-    image: eu.gcr.io/mike-237810/customer_service:1.0.0
+    image: eu.gcr.io/mike-237810/customer_service:1.4.0
     replicaCount: 1
