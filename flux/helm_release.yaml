@@ -1,0 +1,18 @@
+---
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: flask-app
+  namespace: default
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.chart-image: glob:1.*
+spec:
+  releaseName: flux-release
+  chart:
+    git: ssh://git@github.com/mikeallman/flask-kubernetes
+    ref: master
+    path: helm
+  values:
+    image: eu.gcr.io/mike-237810/customer_service:1.4.0
+    replicaCount: 1
